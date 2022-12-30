@@ -3,6 +3,7 @@ package masterIL.RestSpringBoot.user.web;
 import masterIL.RestSpringBoot.user.model.User;
 import masterIL.RestSpringBoot.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,14 +13,22 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Value("${me}")
+    private String me;
+
+    @GetMapping(value = "/Cestqui")
+    public String getName() {
+        return me;
+    }
+
     @GetMapping(value = "/users")
     public List<User> getAllUsers() {
         return userService.listAllUsers();
     }
 
     @PostMapping(value = "/users")
-    public void addUser(@RequestBody User u) {
-        userService.addUser(u);
+    public User addUser(@RequestBody User u) {
+        return userService.addUser(u);
     }
 
     @GetMapping(value = "/user/{id}")

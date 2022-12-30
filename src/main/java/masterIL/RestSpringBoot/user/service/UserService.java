@@ -20,8 +20,8 @@ public class UserService {
         return userRepository.findAllByLastname(lastname);
     }
 
-    public void addUser(User u) {
-        userRepository.save(u);
+    public User addUser(User u) {
+        return userRepository.save(u);
     }
 
     public void updateUser(String id, User u) {

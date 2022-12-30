@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Demo</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width" />
+    <base href="/" />
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+    <script>
+        (function(window, document, undefined){
+
+
+            window.onload = init;
+
+            function init(){
+                var getfunc = function (e) {
+                    e.preventDefault();
+                    $.ajax({
+                        dataType: "json",
+                        type: "GET",
+                        url: "http://localhost:9999/restspringboot-service/user/"+$('#id').val(),
+                        success: function(data) {
+                            $("ul").append("" +
+                                "<h3>Récupération de l'utilisateur</h3>"+
+                                "<li>"+data.firstname+"</li><li>"+data.lastname+"</li><li>"+data.civility+"</li>"
+                            );
+                        },
+                        error: function (xhr, status, error) {
+                            console.log(xhr.responseText);
+                        }
+                    })
+                }
+                var postfunc = function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        dataType: "json",
+                        type: "POST",
+                        url: "http://localhost:9999/restspringboot-service/users",
+                        data: JSON.stringify({
+                            firstname: $("#firstname").val(),
+                            lastname: $("#lastname").val(),
+                            civility: $("#civility").val(),
+                        }),
+                        contentType: "application/json; charset=utf-8",
+                        success: function(data) {
+                            alert("User créé : " + data.firstname);
+                        },
+                        error: function (xhr, status, error) {
+                            console.log(xhr.responseText);
+                        }
+                    })
+                }
+                const getform = document.getElementById('get-user');
+                const postform = document.getElementById('create-user');
+                getform.addEventListener("submit", getfunc, true);
+                postform.addEventListener("submit", postfunc, true);
+            }
+
+        })(window, document, undefined);
+    </script>
+<body>
+<header>
+    <h1>RestSpringBootService</h1>
+</header>
+<main>
+    <div class="container">
+        <div id="greeting">Hello</div>
+    </div>
+    <h2>Récupérer données user</h2>
+    <form method="get" action="" id="get-user">
+        <p>
+            Id de l'user (document mongodb): <input type="text" id="id">
+        </p>
+        <input type="submit" id="submitPost" value="Get">
+    </form>
+    <h2>Ajouter user</h2>
+    <form method="post" action="" id="create-user">
+        <p>
+            Firstname: <input type="text" id="firstname">
+            Lastname: <input type="text" id="lastname">
+            Cvility: <input type="text" id="civility">
+        </p>
+        <input type="submit" id="submitGet" value="Create">
+    </form>
+    <h2>My user data</h2>
+    <ul></ul>
+</main>
+
+</body>
+
+</html>
